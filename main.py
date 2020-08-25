@@ -3,7 +3,7 @@ import wx
 
 class MainFrame(wx.Frame):
     def __init__(self):
-        wx.Frame.__init__(self, None, title='wxpy')
+        super().__init__(None, title='wxpy')
         self.Show()
 
 

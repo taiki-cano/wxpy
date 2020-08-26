@@ -12,7 +12,7 @@ Base = declarative_base()
 
 class Book(Base):
     """
-    * The Book model : ブックテーブルを定期
+    * The Book model : ブックテーブルを定義
     """
     __tablename__ = "books"
     id = Column(Integer, primary_key=True)

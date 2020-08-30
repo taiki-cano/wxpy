@@ -1,9 +1,5 @@
 # -*- coding : <utf-8> -*-
-<<<<<<< HEAD
 # dialogs.py
-=======
-# view.py
->>>>>>> 19e514a688f3235a2ce9a2682efbcc5651788634
 
 import wx
 

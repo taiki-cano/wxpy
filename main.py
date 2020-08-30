@@ -100,7 +100,7 @@ class BookPanel(wx.Panel):
         self.show_all_records()
 
     def on_show_all(self, event):
-        self.show_all_records()
+        self.show_all_records(event)
 
     def show_all_records(self, event):
         """
@@ -116,7 +116,8 @@ class BookPanel(wx.Panel):
         """
         filter_choice = self.categories.GetValue()
         keyword = self.search_ctrl.GetValue()
-        self.book_results_olv = controller.search_records(self.session, filter_choice, keyword)
+        self.book_results_olv = controller.search_records(
+            self.session, filter_choice, keyword)
         self.update_book_results()
 
     def update_book_results(self):
@@ -149,7 +150,7 @@ def main():
     app = wx.App(redirect=False)
     frame = BookFrame()
     app.MainLoop()
-    
+
 
 if __name__ == '__main__':
     main()

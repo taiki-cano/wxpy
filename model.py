@@ -15,6 +15,7 @@ class OlvBook(object):
     """
     * Book model for ObjectListView
     """
+
     def __init__(self, id, title, author, isbn, publisher, last_name, first_name):
         self.id = id  # unique row id from database
         self.title = title
@@ -46,3 +47,6 @@ class Book(Base):
     isbn = Column("isbn", Unicode)
     publisher = Column("publisher", Unicode)
     person = relation("Person", backref="books", cascade_backrefs=False)
+
+
+metadata.create_all(engine)

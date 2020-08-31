@@ -6,20 +6,25 @@ import wx
 
 import controller
 import dialogs
+import model
 
 from pubsub import pub
 from ObjectListView import ObjectListView, ColumnDefn
 
 
 class BookPanel(wx.Panel):
-    """
-    * The book panel widget - holds majority of the widgets
-    * in the UI
-    """
-
     def __init__(self, parent):
         super().__init__(parent)
-        self.book_results = []
+        
+        if not os.path.exists("books.db"):
+            controller.setup_database()
+
+        self.session = controller.connect_to_database()
+        try:
+            self.book_results = controller.get_all_records(self.session)
+        except:
+            self.book_results = []
+
         main_sizer = wx.BoxSizer(wx.VERTICAL)
         search_sizer = wx.BoxSizer(wx.HORIZONTAL)
         btn_sizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -38,25 +43,24 @@ class BookPanel(wx.Panel):
         self.search_ctrl.Bind(wx.EVT_TEXT_ENTER, self.search)
         search_sizer.Add(self.search_ctrl, 0, wx.ALL, 5)
 
-        self.book_results_olv = ObjectListView(
-            self, style=wx.LC_REPORT | wx.SUNKEN_BORDER)
+        self.book_results_olv = ObjectListView(self, style=wx.LC_REPORT | wx.SUNKEN_BORDER)
         self.book_results_olv.SetEmptyListMsg("No Records Found")
         self.update_book_results()
 
         # create the button row
-        add_record_btn = wx.Button(self, label="Add")
+        add_record_btn = wx.Button(self, label="追加")
         add_record_btn.Bind(wx.EVT_BUTTON, self.add_record)
         btn_sizer.Add(add_record_btn, 0, wx.ALL, 5)
 
-        edit_record_btn = wx.Button(self, label="Edit")
+        edit_record_btn = wx.Button(self, label="編集")
         edit_record_btn.Bind(wx.EVT_BUTTON, self.edit_record)
         btn_sizer.Add(edit_record_btn, 0, wx.ALL, 5)
 
-        delete_record_btn = wx.Button(self, label="Delete")
+        delete_record_btn = wx.Button(self, label="削除")
         delete_record_btn.Bind(wx.EVT_BUTTON, self.delete_record)
         btn_sizer.Add(delete_record_btn, 0, wx.ALL, 5)
 
-        show_all_btn = wx.Button(self, label="Show ALL")
+        show_all_btn = wx.Button(self, label="全て表示")
         show_all_btn.Bind(wx.EVT_BUTTON, self.on_show_all)
         btn_sizer.Add(show_all_btn, 0, wx.ALL, 5)
 
@@ -66,18 +70,12 @@ class BookPanel(wx.Panel):
         self.SetSizer(main_sizer)
 
     def add_record(self, event):
-        """
-        * Add a record to the database
-        """
         with dialogs.RecordDialog(self.session) as dlg:
             dlg.ShowModal()
 
         self.show_all_records()
 
     def edit_record(self, event):
-        """
-        * Edit a record
-        """
         selected_row = self.book_results_olv.GetSelectedObject()
         if selected_row is None:
             dialogs.show_message('No row selected!', 'Error')
@@ -89,9 +87,6 @@ class BookPanel(wx.Panel):
         self.show_all_records()
 
     def delete_record(self, event):
-        """
-        * Delete a record
-        """
         selected_row = self.book_results_olv.GetSelectedObject()
         if selected_row is None:
             dialogs.show_message('No row selected!', 'Error')
@@ -99,31 +94,20 @@ class BookPanel(wx.Panel):
         controller.delete_record(self.session, selected_row.id)
         self.show_all_records()
 
-    def on_show_all(self, event):
-        self.show_all_records(event)
-
-    def show_all_records(self, event):
-        """
-        * Updates the record list to show all of them
-        """
+    def show_all_records(self):
         self.book_results = controller.get_all_records(self.session)
         self.update_book_results()
 
     def search(self, event):
-        """
-        * Searches database based on the user's filler
-        * choice and keyword
-        """
         filter_choice = self.categories.GetValue()
         keyword = self.search_ctrl.GetValue()
-        self.book_results_olv = controller.search_records(
-            self.session, filter_choice, keyword)
+        self.book_results = controller.search_records(self.session, filter_choice, keyword)
         self.update_book_results()
 
+    def on_show_all(self, event):
+        self.show_all_records()
+
     def update_book_results(self):
-        """
-        * Update the ObjectListView's contents
-        """
         self.book_results_olv.SetColumns([
             ColumnDefn("Title", "left", 350, "title"),
             ColumnDefn("Author", "left", 150, "author"),
@@ -134,10 +118,6 @@ class BookPanel(wx.Panel):
 
 
 class BookFrame(wx.Frame):
-    """
-    * The top level frame widget
-    """
-
     def __init__(self):
         """ Constructor """
         super().__init__(
@@ -146,11 +126,7 @@ class BookFrame(wx.Frame):
         self.Show()
 
 
-def main():
-    app = wx.App(redirect=False)
+if __name__ == '__main__':
+    app = wx.App(False)
     frame = BookFrame()
     app.MainLoop()
-
-
-if __name__ == '__main__':
-    main()

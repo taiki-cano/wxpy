@@ -92,7 +92,7 @@ class RecordDialog(wx.Dialog):
         if author_dict is None or book_dict is None:
             return
 
-        data = ({"author":author_dict, "book":book_dict})
+        data = ({"author": author_dict, "book": book_dict})
         controller.add_record(self.session, data)
 
         show_message("Bookを追加しました", "Success!", wx.ICON_INFORMATION)
@@ -108,7 +108,7 @@ class RecordDialog(wx.Dialog):
         author_dict, book_dict = self.get_data()
         combo_dict = {**author_dict, **book_dict}
         controller.edit_record(self.session, self.selected_row.id, combo_dict)
-        self.show_message("Bookの編集完了です。Successfully!", "Success", wx.ICON_INFORMATION)
+        show_message("Bookの編集完了です。Successfully!", "Success", wx.ICON_INFORMATION)
         self.Close()
 
     def on_record(self, event):

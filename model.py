@@ -6,7 +6,7 @@ from sqlalchemy import Integer, ForeignKey, String, Unicode
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import backref, relation
 
-engine = create_engine('sqlite:///books.db')
+engine = create_engine('sqlite:///books.db', echo=True)
 Base = declarative_base()
 metadata = Base.metadata
 
@@ -24,6 +24,7 @@ class OlvBook(object):
 
 class Person(Base):
     __tablename__ = "people"
+
     id = Column(Integer, primary_key=True)
     first_name = Column("first_name", String(50))
     last_name = Column("last_name", String(50))
@@ -34,8 +35,9 @@ class Person(Base):
 
 class Book(Base):
     __tablename__ = "books"
+
     id = Column(Integer, primary_key=True)
-    author_id = Column(Integer, ForeignKey("people.id"))
+    author_id = Column(Integer, ForeignKey('people.id'))
     title = Column("title", Unicode)
     isbn = Column("isbn", Unicode)
     publisher = Column("publisher", Unicode)

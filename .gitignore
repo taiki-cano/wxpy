@@ -1,0 +1,7 @@
+test.py
+.vscode/launch.json
+__pycache__/controller.cpython-38.pyc
+__pycache__/dialogs.cpython-38.pyc
+__pycache__/model.cpython-38.pyc
+books copy.db
+books.db

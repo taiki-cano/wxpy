@@ -15,7 +15,6 @@ from ObjectListView import ObjectListView, ColumnDefn
 class BookPanel(wx.Panel):
     def __init__(self, parent):
         super().__init__(parent)
-        
         if not os.path.exists("books.db"):
             controller.setup_database()
 
@@ -44,7 +43,7 @@ class BookPanel(wx.Panel):
         search_sizer.Add(self.search_ctrl, 0, wx.ALL, 5)
 
         self.book_results_olv = ObjectListView(self, style=wx.LC_REPORT | wx.SUNKEN_BORDER)
-        self.book_results_olv.SetEmptyListMsg("No Records Found")
+        self.book_results_olv.SetEmptyListMsg("データーがありません")
         self.update_book_results()
 
         # create the button row
@@ -99,7 +98,9 @@ class BookPanel(wx.Panel):
         self.update_book_results()
 
     def search(self, event):
+        print("AAA = ")
         filter_choice = self.categories.GetValue()
+        print("filter_choice : %s" % filter_choice)
         keyword = self.search_ctrl.GetValue()
         self.book_results = controller.search_records(self.session, filter_choice, keyword)
         self.update_book_results()

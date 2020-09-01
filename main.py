@@ -21,7 +21,7 @@ class BookPanel(wx.Panel):
         self.session = controller.connect_to_database()
         try:
             self.book_results = controller.get_all_records(self.session)
-        except:
+        except Exception:
             self.book_results = []
 
         main_sizer = wx.BoxSizer(wx.VERTICAL)

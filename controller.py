@@ -88,4 +88,4 @@ def search_records(session, filter_choice, keyword):
 
 
 def setup_database():
-    metadata.create_all()
+    super().metadata.create_all()

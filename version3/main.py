@@ -1,7 +1,5 @@
 # -*- coding : <utf-8> -*-
 # main.py
-# -*- coding : <utf-8> -*-
-# main.py
 
 import wx
 
@@ -12,12 +10,12 @@ class MainFrame(wx.Frame):
         self.InitializeComponents()
 
     def InitializeComponents(self):
-        top_sp = wx.SplitterWindow(
-            self, -1, style=wx.SP_LIVE_UPDATE | wx.SP_3DSASH)
-        sp = wx.SplitterWindow(
-            top_sp, -1, style=wx.SP_LIVE_UPDATE | wx.SP_3DSASH)
+        top_sp = wx.SplitterWindow(self, -1, style=wx.SP_LIVE_UPDATE | wx.SP_3DSASH)
+        sp = wx.SplitterWindow(top_sp, -1, style=wx.SP_LIVE_UPDATE | wx.SP_3DSASH)
         self.main_display = wx.ScrolledWindow(sp, -1)
         self.sub_display = wx.ScrolledWindow(sp, -1)
+        # マウスホイールで横スクロール
+        self.sub_display.Bind(wx.EVT_SCROLLWIN, self.onScroll)
         self.tool_box = wx.Panel(top_sp, 1)
 
         self.Create_ToolBox(self, title='Tool_Box', target=self.tool_box)
@@ -32,6 +30,10 @@ class MainFrame(wx.Frame):
         sp.SetMinimumPaneSize(1)
         top_sp.SplitVertically(sp, self.tool_box)
         top_sp.SetMinimumPaneSize(1)
+
+    def onScroll(self, event):
+        event.SetOrientation(wx.HORIZONTAL)
+        event.Skip()
 
     def Create_ToolBox(self, parent, title, target):
         btn_sizer = wx.StaticBoxSizer(wx.VERTICAL, target, title)

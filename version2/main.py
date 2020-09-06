@@ -12,13 +12,14 @@ class MainFrame(wx.Frame):
     def InitializeComponents(self):
         top_sp = wx.SplitterWindow(self, -1, style=wx.SP_LIVE_UPDATE | wx.SP_3DSASH)
         sp = wx.SplitterWindow(top_sp, -1, style=wx.SP_LIVE_UPDATE | wx.SP_3DSASH)
-        self.main_display = wx.Panel(sp, wx.ID_ANY, style=wx.SUNKEN_BORDER)
-        self.tool_box = wx.Panel(sp, wx.ID_ANY, style=wx.SUNKEN_BORDER | wx.ALIGN_CENTER)
-        self.sub_display = wx.Panel(top_sp, wx.ID_ANY, style=wx.SUNKEN_BORDER)
+        self.main_display = wx.Panel(sp, 1)
+        self.tool_box = wx.Panel(sp, 1)
+        self.sub_display = wx.ScrolledWindow(top_sp, -1) # wx.Panel(top_sp, 1, style=wx.HSCROLL)
 
         self.Create_ToolBox(self, title='Tool_Box', target=self.tool_box)
         self.Create_MainDisplay(self, title='Main_Display', target=self.main_display)
         self.Create_SubDisplay(self, title='Sub_Display', target=self.sub_display)
+        self.sub_display.SetScrollRate(10, 10)
 
         sp.SetSashGravity(0.8)
         top_sp.SetSashGravity(0.7)
@@ -31,16 +32,23 @@ class MainFrame(wx.Frame):
         btn_sizer = wx.StaticBoxSizer(wx.VERTICAL, target, title)
         btn1 = wx.Button(target, -1, 'Button_1')
         btn2 = wx.Button(target, -1, 'Button_2')
-        btn_sizer.Add(btn1)
-        btn_sizer.Add(btn2)
+        btn_sizer.Add(btn1, flag=wx.ALIGN_CENTER)
+        btn_sizer.Add(btn2, flag=wx.ALIGN_CENTER)
         target.SetSizer(btn_sizer)
 
     def Create_MainDisplay(self, parent, title, target):
         maindisp_sizer = wx.StaticBoxSizer(wx.VERTICAL, target, title)
+        maindisp = wx.Panel(target, -1, style=wx.SUNKEN_BORDER)
+        maindisp.SetBackgroundColour('#00FF56')
+        maindisp_sizer.Add(maindisp, 1, wx.EXPAND)
         target.SetSizer(maindisp_sizer)
 
     def Create_SubDisplay(self, parent, title, target):
-        subdisp_sizer = wx.StaticBoxSizer(wx.VERTICAL, target, title)
+        subdisp_sizer = wx.StaticBoxSizer(wx.HORIZONTAL, target, title)
+        for _ in range(15):
+            subdisp = wx.Panel(target, -1, style=wx.SUNKEN_BORDER, size=(200, 100))
+            subdisp.SetBackgroundColour('#FF7896')
+            subdisp_sizer.Add(subdisp, 0, wx.ALIGN_CENTER)
         target.SetSizer(subdisp_sizer)
 
 

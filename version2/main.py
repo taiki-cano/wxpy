@@ -16,9 +16,9 @@ class MainFrame(wx.Frame):
         self.tool_box = wx.Panel(sp, wx.ID_ANY, style=wx.SUNKEN_BORDER | wx.ALIGN_CENTER)
         self.sub_display = wx.Panel(top_sp, wx.ID_ANY, style=wx.SUNKEN_BORDER)
 
-        self.Create_SBS(self, title='Tool_Box', target=self.tool_box)
-        self.Create_SBS(self, title='Main_Display', target=self.main_display)
-        self.Create_SBS(self, title='Sub_Display', target=self.sub_display)
+        self.Create_ToolBox(self, title='Tool_Box', target=self.tool_box)
+        self.Create_MainDisplay(self, title='Main_Display', target=self.main_display)
+        self.Create_SubDisplay(self, title='Sub_Display', target=self.sub_display)
 
         sp.SetSashGravity(0.8)
         top_sp.SetSashGravity(0.7)
@@ -27,12 +27,20 @@ class MainFrame(wx.Frame):
         top_sp.SplitHorizontally(sp, self.sub_display)
         top_sp.SetMinimumPaneSize(1)
 
-    def Create_SBS(self, parent, title, target):
+    def Create_ToolBox(self, parent, title, target):
         btn_sizer = wx.StaticBoxSizer(wx.VERTICAL, target, title)
         btn1 = wx.Button(target, -1, 'Button_1')
         btn2 = wx.Button(target, -1, 'Button_2')
         btn_sizer.Add(btn1)
         btn_sizer.Add(btn2)
+        target.SetSizer(btn_sizer)
+
+    def Create_MainDisplay(self, parent, title, target):
+        btn_sizer = wx.StaticBoxSizer(wx.VERTICAL, target, title)
+        target.SetSizer(btn_sizer)
+
+    def Create_SubDisplay(self, parent, title, target):
+        btn_sizer = wx.StaticBoxSizer(wx.VERTICAL, target, title)
         target.SetSizer(btn_sizer)
 
 

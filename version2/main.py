@@ -6,7 +6,7 @@ import wx
 
 class MainFrame(wx.Frame):
     def __init__(self):
-        super().__init__(None, id=-1, title="パネル配置", size=(800, 600))
+        super().__init__(None, id=-1, title="SplitterWindow", size=(800, 600))
         self.InitializeComponents()
 
     def InitializeComponents(self):
@@ -29,8 +29,8 @@ class MainFrame(wx.Frame):
 
     def Create_SBS(self, parent, title, target):
         btn_sizer = wx.StaticBoxSizer(wx.VERTICAL, target, title)
-        btn1 = wx.Button(target, -1, 'ぼたん1')
-        btn2 = wx.Button(target, -1, 'ボタン2')
+        btn1 = wx.Button(target, -1, 'Button_1')
+        btn2 = wx.Button(target, -1, 'Button_2')
         btn_sizer.Add(btn1)
         btn_sizer.Add(btn2)
         target.SetSizer(btn_sizer)

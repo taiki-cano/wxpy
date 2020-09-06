@@ -36,12 +36,12 @@ class MainFrame(wx.Frame):
         target.SetSizer(btn_sizer)
 
     def Create_MainDisplay(self, parent, title, target):
-        btn_sizer = wx.StaticBoxSizer(wx.VERTICAL, target, title)
-        target.SetSizer(btn_sizer)
+        maindisp_sizer = wx.StaticBoxSizer(wx.VERTICAL, target, title)
+        target.SetSizer(maindisp_sizer)
 
     def Create_SubDisplay(self, parent, title, target):
-        btn_sizer = wx.StaticBoxSizer(wx.VERTICAL, target, title)
-        target.SetSizer(btn_sizer)
+        subdisp_sizer = wx.StaticBoxSizer(wx.VERTICAL, target, title)
+        target.SetSizer(subdisp_sizer)
 
 
 if __name__ == "__main__":
